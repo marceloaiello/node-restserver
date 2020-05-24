@@ -9,7 +9,7 @@ const Usuario = require('../models/usuario');
 const { verificaToken, verificaAdmin_Role } = require('../middelwares/autenticacion');
 const app = express();
 
-app.get('/usuario', verificaToken, (req, res) => {
+app.get('/usuario', verificaToken, function(req, res) {
 
     /*
             return res.json({
