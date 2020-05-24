@@ -3,16 +3,27 @@
 //===========
 process.env.PORT = process.env.PORT || 3000;
 
-
 //=============
 // entorno
 //===========
 process.env.NODE_ENV = process.env.NODE_ENV || 'dev';
 
+//=============
+// fecha expiracion token
+//===========
+//expiera en 30 dias: 60 segundos * 60 minutos * 24 horas * 30 dias... 
+process.env.CADUCIDAD_TOKEN = 60 * 60 * 24 * 30;
+
+
+//=============
+// seed de token
+//===========
+process.env.SEED = process.env.SEED || 'este-es-el-seed-desarrollo';
+
+
 //==============
 // base de datos
 //==============
-
 let urlDB;
 
 if (process.env.NODE_ENV === 'dev') {
