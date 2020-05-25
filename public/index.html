@@ -1,0 +1,82 @@
+<!DOCTYPE html5>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta Set-Cookie: SameSite=None; Secure>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google sign in DEMO</title>
+
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta name="google-signin-client_id" content="202101856453-t518r1uc1k3lbusbmlpvlhgef2ocl6d3.apps.googleusercontent.com">
+
+
+
+</head>
+
+<body>
+
+    <h1>prueba sigin google </h1>
+    <div class=" g-signin2 " data-onsuccess="onSignIn"></div>
+
+    <a href="# " onclick="signOut();">Sign out</a>
+    <script>
+        function signOut() {
+            gapi.auth2.getAuthInstance().disconnect();
+            var auth2 = gapi.auth2.getAuthInstance();
+            auth2.signOut().then(function() {
+                console.log('User signed out.');
+            });
+        }
+    </script>
+
+
+    <script>
+        function onSignIn(googleUser) {
+            console.log("entro");
+            const profile = googleUser.getBasicProfile();
+            console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+            console.log('Name: ' + profile.getName());
+            console.log('Image URL: ' + profile.getImageUrl());
+            console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+
+            const id_token = googleUser.getAuthResponse().id_token;
+            console.log(id_token);
+
+
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/google');
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onload = function() {
+                console.log('Signed in as: ' + xhr.responseText);
+            };
+            xhr.send('idtoken=' + id_token);
+
+
+        }
+
+        function onSuccess(googleUser) {
+            console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
+        }
+
+        function onFailure(error) {
+            console.log(error);
+        }
+
+        function renderButton() {
+            gapi.signin2.render('my-signin2', {
+                'scope': 'profile email',
+                'width': 240,
+                'height': 50,
+                'longtitle': true,
+                'theme': 'dark',
+                'onsuccess': onSuccess,
+                'onfailure': onFailure
+            });
+        }
+    </script>
+
+</body>
+
+</html>
